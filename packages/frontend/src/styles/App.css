@@ -1,0 +1,94 @@
+.App {
+  text-align: center;
+  /* margin-top: 2rem !important; */
+  margin-left: 1vw !important;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.mapContainer {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+.bg-blue {
+  background-color: #019ac7 !important;
+}
+
+input:checked + .toggle--active-blue {
+  color: #019ac7;
+}
+.txt-s {
+  font-size: 14px;
+}
+.file {
+  display: inline-block;
+}
+.file-cta {
+  background-color: #019ac7;
+  color: #fff;
+}
+
+.file-label:hover .file-cta {
+  background-color: #019ac7;
+  color: #fff;
+}
+
+.image.is-128x128 {
+  margin-top: 2rem;
+}
+
+.uploadButton {
+  background-color: #019ac7;
+  color: #fff;
+  font-weight: 500;
+  border-color: #019ac7;
+  border-width: 1px;
+  color: #fff;
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.uploadButton:hover {
+  color: #fff;
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
