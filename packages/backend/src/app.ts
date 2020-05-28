@@ -34,14 +34,15 @@ const app: express.Application = express();
 const dir = resolve(__dirname, '../tmp/');
 
 // Set multer storage
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: dir,
-  filename: function (req, file, cb) {
+  // eslint-disable-next-line no-restricted-syntax
+  filename(req, file, cb) {
     cb(null, file.originalname);
   },
 });
 
-var upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 app.use(cors());
 app.use(helmet());
@@ -53,7 +54,7 @@ app.post(
   upload.single('file'),
   async (req: express.Request, res: express.Response) => {
     try {
-      const file = req.file;
+      const { file } = req;
       if (!file) {
         res.status(400).send({
           message: 'No file uploaded',

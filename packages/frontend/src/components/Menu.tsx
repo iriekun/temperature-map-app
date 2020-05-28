@@ -1,9 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, ChangeEvent } from 'react';
 import '../styles/App.css';
 import { Option } from './App';
 import logo from '../resources/logo.png';
 
-const Menu = ({
+type MenuProps = {
+  onSubmit: (handleSubmit: any) => void;
+  register: (param: any) => void;
+  setValue: (name: string, value: {}) => void;
+  filename: string;
+  setFilename: (filename: string) => void;
+  incorrectFormat: boolean;
+  setIncorrectFormat: (incorrectFormat: boolean) => void;
+  options: Option[];
+  value: string;
+  setActive: (option: Option) => void;
+};
+
+const Menu: React.FC<MenuProps> = ({
   onSubmit,
   register,
   setValue,
@@ -14,16 +27,19 @@ const Menu = ({
   options,
   value,
   setActive,
-}: any) => {
+}: MenuProps) => {
   useEffect(() => {
     register({ name: 'files' }); // custom register react-hook-form
   }, [register]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent) => {
     if (incorrectFormat) setIncorrectFormat(false);
-    const fileNames = Array.from(e.target.files).map((file: any) => file.name);
+    const target = e.target as HTMLInputElement;
+    const fileNames = Array.from(target.files as FileList).map(
+      (file: File) => file.name
+    );
     setFilename(fileNames[0]);
-    setValue('files', e.target.files); // get all the file objects
+    setValue('files', target.files as FileList); // get all the file objects
   };
 
   const renderOptions = (option: Option, i: number) => {
@@ -36,7 +52,7 @@ const Menu = ({
             name="tempUnit"
             type="radio"
             value={option.value}
-            ref={register({ required: true })}
+            ref={register}
           />
           <div className="txt-s py3 toggle--white toggle--active-blue toggle">
             {option.name}

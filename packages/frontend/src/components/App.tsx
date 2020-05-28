@@ -12,6 +12,11 @@ export interface Option {
   property: Record<string, any>;
 }
 
+type Form = {
+  files: File[];
+  tempUnit: string;
+};
+
 const options: Option[] = [
   {
     name: 'Celcius',
@@ -22,13 +27,16 @@ const options: Option[] = [
       '\n',
       [
         'to-string',
-        ['*', ['/', 5, 9], ['-', ['to-number', ['get', 'temperature']], 32]],
+        [
+          'round',
+          ['*', ['/', 5, 9], ['-', ['to-number', ['get', 'temperature']], 32]],
+        ],
       ],
       ' C',
     ],
   },
   {
-    name: 'Farenheit',
+    name: 'Fahrenheit',
     value: 'F',
     property: [
       'concat',
@@ -52,7 +60,7 @@ const defaultLayoutProperty = [
 ];
 const apiUrl = 'http://localhost:5000/upload';
 
-const App = () => {
+const App: React.FC = () => {
   const [geodata, setGeodata] = useState<string>('');
   const [latLngZoom, setLatLngZoom] = useState({
     lng: 19.47437,
@@ -63,41 +71,38 @@ const App = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
 
   const [active, setActive] = useState(options[0]);
-  const { register, handleSubmit, setValue, reset } = useForm();
-  const [filename, setFilename] = useState<string>();
+  const { register, handleSubmit, setValue, reset } = useForm<Form>();
+  const [filename, setFilename] = useState<string>('');
   const [incorrectFormat, setIncorrectFormat] = useState(false);
   const [unit, setUnit] = useState('');
 
-  const onSubmit = handleSubmit(
-    async (data: Record<string, any>): Promise<void> => {
-      const form = new FormData();
-      const { files } = data || {};
-      if (files !== undefined) {
-        const file = files[0];
-        if (file.type !== 'application/json') {
-          setIncorrectFormat(true);
-        } else {
-          setIncorrectFormat(false);
-          form.append('file', files[0]);
-          form.append('tempUnit', data.tempUnit);
-          try {
-            const res = await fetch(apiUrl, {
-              method: 'POST',
-              body: form,
-            });
-            const json = await res.json();
-            setGeodata(json);
-            setUnit(data.tempUnit);
-            reset();
-            setFilename('');
-          } catch (err) {
-            console.error(err);
-          }
+  const onSubmit = async (data: Record<string, any>): Promise<void> => {
+    const form = new FormData();
+    const { files } = data || {};
+    if (files !== undefined) {
+      const file = files[0];
+      if (file.type !== 'application/json') {
+        setIncorrectFormat(true);
+      } else {
+        setIncorrectFormat(false);
+        form.append('file', files[0]);
+        form.append('tempUnit', data.tempUnit);
+        try {
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            body: form,
+          });
+          const json = await res.json();
+          setGeodata(json);
+          setUnit(data.tempUnit);
+          reset();
+          setFilename('');
+        } catch (err) {
+          console.error(err);
         }
       }
     }
-  );
-
+  };
   const { name, value, property } = active;
   // map initialization.
   useEffect(() => {
@@ -143,7 +148,7 @@ const App = () => {
         (map.getSource('cities') as GeoJSONSource).setData(geodata);
       }
     }
-  }, [geodata]);
+  }, [map, geodata]);
 
   // render map when switching temperature unit
   useEffect(() => {
@@ -165,7 +170,7 @@ const App = () => {
       <div className="columns">
         <div className="column">
           <Menu
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             register={register}
             setValue={setValue}
             filename={filename}
