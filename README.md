@@ -8,7 +8,10 @@
 - The uploaded file has temperature unit based on selected switch
 - File validation to allow only json file
 - Cities and temperature in selected unit (°C or °F) are shown on map if the file is uploaded successfully
-- User can switch from °C to °F or °F to °C after the map rendered to see the conversion of temperature in either °C or °F
+- User can switch from °C to °F or °F to °C after the map rendered to see the conversion of temperature in
+  either °C or °F
+
+![demo](https://github.com/iriekun/temp-map-app/blob/master/resources/demo.gif)
 
 ## Requirements
 
@@ -85,4 +88,4 @@ docker-compose build
 docker-compose up
 ```
 
-- use sample data file `C-data.json` (data with temperature in Celcius) & `F-data.json` (data with temperature in Fahrenheit) or create your own json file
+- use sample data file `C-data.json` (data with temperature in Celcius) & `F-data.json` (data with temperature in Fahrenheit) inside `resources` folder or create your own json file
