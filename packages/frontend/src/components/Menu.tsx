@@ -1,7 +1,6 @@
 import React, { useEffect, ChangeEvent } from 'react';
 import '../styles/App.css';
 import { Option } from './App';
-import logo from '../resources/logo.png';
 
 type MenuProps = {
   onSubmit: (handleSubmit: any) => void;
@@ -64,12 +63,6 @@ const Menu: React.FC<MenuProps> = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <div>
-        <figure className="image is-128x128">
-          <img src={logo} alt="logo" />
-        </figure>
-      </div>
-
       <div className="toggle-group round-full bg-blue py3 px3 my12">
         {options.map(renderOptions)}
       </div>
